@@ -22,9 +22,9 @@ gene_sequence=`seq 0 $gene_number_minus_one`
 
 # Define arrays of gene lengths, gene names, and chromosomes
 
-length_array=`awk '{OFS="\t"} { diff = $3 - $2 ; print diff }' $query_genes`
-gene_array=`awk '{OFS="\t"} { print $4 }' $query_genes`
-chr_array=`awk '{OFS="\t"} { print $1 }' $query_genes`
+length_array=`awk '{ diff = $3 - $2 ; print diff }' $query_genes`
+gene_array=`awk '{ print $4 }' $query_genes`
+chr_array=`awk '{ print $1 }' $query_genes`
 
 # Run divergence analyses on genes individually by recoding each gene as a temporary vcf and temporary geno file,
 # window sizes are the same as the gene length and minimums are defined based on gene length as well
@@ -33,14 +33,14 @@ chr_array=`awk '{OFS="\t"} { print $1 }' $query_genes`
 # Location of python scripts and population/individual names should be changed accordingly 
 
 for d in $gene_sequence; do
-    min_length=`grep ${gene_array[$d]}_exon ../exon_experimentation/random_nuclear_exons.bed | awk '{diff = $3 - $2; summed += diff} END {print summed}'`
+    min_length=`grep "[0-9]_${gene_array[$d]}$" ../exon_experimentation/random_nuclear_exons.bed | awk '{diff = $3 - $2; summed += diff} END {print summed}'`
     echo $min_length > divergence_minimum.txt
-    minimum_variable=`awk '{OFS="\t"} { minimum = $1/1000 * 5; print minimum }' divergence_minimum.txt | sed 's/\.[0-9]*//'` 
+    minimum_variable=`awk '{ minimum = $1/1000 * 5; print minimum }' divergence_minimum.txt | sed 's/\.[0-9]*//'` 
     cat header.txt > temp_file.bed
-    grep ${gene_array[$d]} $query_genes >> temp_file.bed
+    grep "${gene_array[$d]}$" $query_genes >> temp_file.bed
     vcftools --vcf ../recode_experimentation/nuclear_exons.${chr_array[$d]} --bed temp_file.bed --recode --out temp_file
-    python ../../pop_gen_scripts/genomics_general/parseVCF.py -i temp_file.recode.vcf -o temp_file.geno --skipIndels --skipMono 
-    python ../../pop_gen_scripts/genomics_general/popgenWindows.py -g temp_file.geno -o divergence_${gene_array[$d]} -f phased -w ${length_array[$d]} -m ${minimum_variable} -p Sinica Tibetan-macaque-NO.3,XH1.Assamensis,A20 -p Fascicularis BGI-96346.mulatta,BGI-CE-4.fascicularis,BGI.Mulatta-1,CR-5.Mulatta-2 -p Arctoides Malaya,SM1.Arctoides-1,SM2.Arctoides-2 -p Baboon papAnu4
+    python ~/pop_gen_scripts/genomics_general/parseVCF.py -i temp_file.recode.vcf -o temp_file.geno --skipIndels --skipMono 
+    python ~/pop_gen_scripts/genomics_general/popgenWindows.py -g temp_file.geno -o divergence_${gene_array[$d]} -f phased -w ${length_array[$d]} -m ${minimum_variable} -p Sinica Tibetan-macaque-NO.3,XH1.Assamensis,A20 -p Fascicularis BGI-96346.mulatta,BGI-CE-4.fascicularis,BGI.Mulatta-1,CR-5.Mulatta-2 -p Arctoides Malaya,SM1.Arctoides-1,SM2.Arctoides-2 -p Baboon papAnu4
 done
 
 # Create a .csv file that includes all measurements obtained
