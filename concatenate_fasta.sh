@@ -9,7 +9,7 @@ gene_array=(`awk '{print $4}' ../NMT_CDS.bed`)
 
 for s in ${gene_array[@]}; do
 
-exon_array=(`ls *$s | sort -n`) 
+exon_array=(`ls *[0-9]_${s} | sort -n`) 
 
 	for filename in ${exon_array[@]}
 	do
