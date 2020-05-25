@@ -33,7 +33,7 @@ chrom=`grep "\s${x}$" ${query_genes} | awk '{print $1}'`
     grep "]s${x}$" $query_genes | awk '{print $1,$2,$3}' > tree_temp_coordinates.bed
     vcftools --vcf ~/mitonuclear_rhesus_files/recode_experimentation/recodes_without_suffix/NMT_exons.${chrom} --bed tree_temp_file.bed --recode --out tree_temp_file
     python ~/pop_gen_scripts/genomics_general/parseVCF.py -i tree_temp_file.recode.vcf -o tree_temp_file.geno --skipIndels --skipMono
-    python phyml_sliding_windows.py -T 4 -g tree_temp_file.geno -p tree_${x} -w ${length} -M ${minimum_variable} --windType predefined --windCoords tree_temp_coordinates.bed --model GTR
+    python phyml_sliding_windows.py -T 4 -g tree_temp_file.geno -p ${x} -w ${length} -M ${minimum_variable} --windType predefined --windCoords tree_temp_coordinates.bed --model GTR
 
 done
 
