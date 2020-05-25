@@ -5,20 +5,17 @@
 source /opt/asn/etc/asn-bash-profiles-special/modules.sh
 module load python/2.7.9
 
-# Define input bed file to determine GC content of genes within and define arrays of each column
+query_genes=$1
 
-filename=truest_nuclear_CDS.bed
+# Define arrays of gene lengths, gene names, and chromosomes
 
-chrom=(`awk '{print $1}' $filename`)
-start_points=(`awk '{print $2}' $filename`)
-end_points=(`awk '{print $3}' $filename`)
-gene_names=(`awk '{print $4}' $filename`)
+gene_array=(`awk '{print $4}' ${query_genes}`)
 
-# Define array of 0 to the number of genes inside the bed file subtracted by one, which ultimately is the number of genes in the bed file
+for x in ${gene_array[@]}; do
 
-gene_number=`grep -c "chr" $filename`
-gene_number_minus_one=`expr $gene_number - 1`
-gene_sequence=(`seq 0 $gene_number_minus_one`)
+chrom=`grep "\s${x}$" ${query_genes} | awk '{print $1}'`
+start_point=`grep "\s${x}$" ${query_genes} | awk '{print $2}'`
+end_point=`grep "\s${x}$" ${query_genes} | awk '{print $3}'`
 
 # Run a loop where GC content is found for specific positions in a reference genome file using GC_script.py and 
 # then output with the bed columns defined earlier and with a 5th column for GC content 
@@ -26,6 +23,6 @@ gene_sequence=(`seq 0 $gene_number_minus_one`)
 # Hopefully I will find a way to speed it up in the future.
 
 for x in ${gene_sequence[@]}; do
-GC_content=`python GC_script.py ../fasta_experimentation/rheMac8.fa ${chrom[${x}]} ${start_points[${x}]} ${end_points[${x}]}`
-echo "${chrom[${x}]}	${start_points[${x}]}	${end_points[${x}]}	${gene_names[${x}]}	$GC_content" >> nuclear_GC.bed
+GC_content=`python GC_script.py ../fasta_experimentation/rheMac8.fa ${chrom} ${start_point} ${end_point}`
+echo "${chrom}	${start_point}	${end_point}	${x}	$GC_content" >> output.bed
 done

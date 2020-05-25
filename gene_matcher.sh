@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Introduction: This script will take two bed files containing recombination rates, GC content, and gene length values on top of standard bed information.
+# This script will take two bed files containing recombination rates, GC content, and gene length values on top of standard bed information.
 # The gene lengths can be found by simply subtracting bed start from end values. Finding recom rate and GC content will require additional scripts and data.
 # This script is fairly repetetive, the mechanism of matching recom rate to recom rate and GC content to GC content is pretty similar. Thus, there are
 # three seperate but very similar python scripts involved (named match_math[1-3].py). More specific detail can be found in each of these scripts

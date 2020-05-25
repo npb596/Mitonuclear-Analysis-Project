@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Define array of gene names of interest from a bed file
-gene_array=(`awk '{print $4}'  ../../../NMT_CDS.bed`)
+filename=$1
+gene_array=(`awk '{print $4}' $filename`)
 
 # For each gene in the array make a variable that states the orientation (positive or negative) of the sequence using
-# an annotation downloaded from ENSEMBL. 
+# an ENSEMBL annotation file downloaded from UCSC Genome Browser. 
 for x in ${gene_array[@]}; do
 orientation=`grep "${x}" ~/ensGene.combined.txt | awk '{print $4}' | head -n 1`
 
