@@ -1,18 +1,17 @@
+# Load module necessary for generating contingency table image
 library(gridExtra)
 
-setwd("~/Desktop/Macaque_files/Altitude_Project")
+# Set working directory to Selection Data
+setwd("~/Desktop/Macaque_files/mitonuclear_project/pop_gen_analysis/Selection_Data")
 
+# Replace file as needed to enter contingency data
+selection=read.table("functional_category_contingency.tsv",header=T,stringsAsFactors = T)
 
-selection=read.table("contingency_table_mitonuclear.tsv",header=T,stringsAsFactors = T)
+# Create contingency table
+selection_table=table(selection$Category, selection$Extension)
 
-selection_table=table(selection$Source, selection$Extension)
-
-table(selection$Altitude, selection$Base)
-
-#pdf("selection_contingency.pdf")
+# Crate nice simple image of contingency table
 grid.table(selection_table)
-#dev.off()
 
-#sink("selection_fisher_test.txt")
-fisher.test(selection_table, alternative = "less")
-#sink()
+# Conduct Fisher's exact test on table, change alternative as needed
+fisher.test(selection_table, alternative = "greater")

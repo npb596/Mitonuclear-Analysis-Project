@@ -1,52 +1,37 @@
-setwd("~/Desktop/Macaque_files/mitonuclear_project/pop_gen_analysis")
+# Set working directory to introgression data
+setwd("~/Desktop/Macaque_files/mitonuclear_project/pop_gen_analysis/Introgression_Data")
 
-Sin_table = read.table("Introgression_Data/Arc_Sin_recom_data.txt")
-
-#SinRecom <- log(Sin_table$V2)
-
+# Define table from Arc-Sin recombinationa data file
+# Calculate linear regression model and then summarize the ouput on console
+Sin_table = read.table("Arc_Sin_recom_data.txt")
 SinMod <- lm(formula = Sin_table$V2 ~ Sin_table$V3)
-
 summary(SinMod)
 
-cor(Sin_table$V2, Sin_table$V3, use = "complete.obs")
-
-#pdf("Arc_Sin_recom_plots.pdf")
-plot(SinMod)
-
-#dev.off()
-
-#pdf("Introgression_results/Sinica_recombination_CDS.pdf")
-
-#dev.off()
-
-Fas_table = read.table("Introgression_Data/Arc_Fas_recom_data.txt")
-
-#FasRecom <- log(Fas_table$V2)
-
+# Define table from Arc-Fas recombinationa data file
+# Calculate linear regression model and then summarize the ouput on console
+Fas_table = read.table("Arc_Fas_recom_data.txt")
 FasMod <- lm(formula = Fas_table$V2 ~ Fas_table$V3)
-
 summary(FasMod)
 
-cor(Fas_table$V2, Fas_table$V3)
+# Create text containing summary stats of Arc-Sin and Arc-Fas files
+Sin_expression <- expression(paste("N = 56, ","P = 0.204, ",R^2," = 0.009"))
+Fas_expression <- expression(paste("N = 23, ","P = 0.134, ",R^2," = 0.076"))
 
-#pdf("Arc_Fas_recom_plots.pdf")
-plot(FasMod)
-#dev.off()
-
-#pdf("Introgression_results/Fascicularis_recombination_CDS.pdf")
-par(mfrow=c(1,2))
+# Plot Arc-Sin and Arc-Fas data together including text generated above
+par(mar = c(5.1, 5.1, 4.1, 2.1), mfrow=c(1,2))
 scatter.smooth(x=Sin_table$V2, y=Sin_table$V3,
                pch = 19,
-               col=c("purple"),
+               col=c("#af8dc3"),
                xlab='Recombination Rate (cM/Mb)',
                ylab="fdM",
                cex.lab=2.5, cex.axis=2)
-               text(4, 0.05, labels = "A", cex=3)
+               text(4, 0.05, labels = "A", cex=3.5)
+               text(3, -0.55, labels = Sin_expression, cex=2)
 scatter.smooth(x=Fas_table$V2, y=Fas_table$V3,
                pch = 19,
-               col=c("purple"),
+               col=c("#af8dc3"),
                xlab='Recombination Rate (cM/Mb)',
                ylab="",
                cex.lab=2.5, cex.axis=2)
-               text(0.35, 0.3, labels = "B",cex=3)
-#dev.off()
+               text(0.35, 0.3, labels = "B",cex=3.5)
+               text(0.1, -0.45, labels = Fas_expression, cex=2)
