@@ -1,8 +1,16 @@
 # This script includes analysis for the manuscript titled:
+# Examination of Mitonuclear Conflict in a Macaque Species Exhibiting Mitonuclear Discordance
 
 # It is split into 4 code sections which can be expanded/collapsed in RStudio 
 # Expand: either click on the arrow in the gutter or on the icon that overlays the folded code 
 # Collapse: click on the arrow in the gutter
+
+# This script can be run on a command line by simply running "Rscript Mitonuclear_Stats_Plots.R"
+# in the directory containing the script. 
+# If running on RStudio each command can be run individually
+# Once all commands are run the script will output figures and statistical results
+# to the Figures and Stats directories respectively
+# Currently, sourcing the script in RStudio will not produce some figures and results
 
 # The following libraries are necessary for the below analyses
 # If running on RStudio then running each line will prompt the user to install the library
@@ -12,9 +20,10 @@ library(plyr)
 library(gridExtra)
 library(dplyr)
 
-# Set working directory according to location of data file
-# Working directory is currently set leading to Gene_Data.csv in the git repo
-#setwd("~/Desktop/Mitonuclear_Project/Mitonuclear-Analysis-Project")
+# Set working directory according to location of data file if using through RStudio
+# Working directory should be set to directory containing the Git Repo
+# As of now it assumes the home directory contains the git repo
+#setwd("~/Mitonuclear-Analysis-Project")
 
 # Read in complete data file for this study
 # Also read in a data file containing only paired N-mt and nuclear genes
