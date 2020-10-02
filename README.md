@@ -7,9 +7,9 @@ Speciation and hybridization are fundamental and intertwined processes in the st
 
 # Data Analysis
 
-The R scripts used for all statistical analysis and to produce all data figures and model tables are included in the folder ["R-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/R-Scripts).
-
-The folder ["Gene-Processing-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Gene-Processing-Scripts)
+The directory ["Gene-Processing-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Gene-Processing-Scripts)
 contains scripts used to convert gene data between different formats and to obtain "matching" data for N-mt and nuclear genes. Dependendencies and authorship of source scripts are stated within scripts.
 
-The folder ["Pop-Gen-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Pop-Gen-Scripts) contains scripts used to run divergence, introgression, and selection analyses on N-mt and nuclear genes. These are all bash scripts designed to loop through programs computing these statistics.
+The directory ["Pop-Gen-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Pop-Gen-Scripts) contains scripts used to run divergence, introgression, and selection analyses on N-mt and nuclear genes. These are all bash scripts designed to loop through programs computing these statistics.
+
+A single data file ("Gene_Data.csv") is provided that contains all information gathered from scripts in the above directories. A single R script is provided that will analyze this data file and produce Figures and text files with statistical analyses and output these respectively to ["Figures"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Figures) and ["Stats"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Stats).
