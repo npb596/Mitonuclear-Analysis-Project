@@ -18,8 +18,8 @@
 library(ggplot2)
 library(ggpubr)
 library(plyr)
-library(gridExtra)
 library(dplyr)
+library(gridExtra)
 
 # Set working directory according to location of data file if using through RStudio
 # Working directory should be set to directory containing the Git Repo
@@ -71,40 +71,45 @@ Fas_MISC=Fas_Dxy[Fas_Dxy$Category == "MISC", ]
 # Plot all data with titles, x (Sinica or Fascicularis) and y (Dxy values) labels, 
 # and colors (N-mt and Nuclear) filling in violin plots 
 ALL_plot <- ggplot(Dxy, aes(x=Comparison, y=dxy, fill = Type)) + ylim(0,0.69) +
-  labs(title="All Functional Categories", x ="Species", y="Dxy") +
+  labs(title="All Functional Categories (N = 116)", x ="Species", y="Dxy") +
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   theme(legend.title=element_text(size=25)) + theme(legend.text=element_text(size=23)) +
   scale_fill_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) + 
-  theme(text = element_text(size=15)) + geom_text(x=1.7, y=0.7, 
-  label="N = 116, Sin P = 0.023, Fas P = 0.759", size=5) + 
+  theme(text = element_text(size=15)) + 
+  geom_text(x=1, y=0.7, label="P = 0.759", size=5) + 
+  geom_text(x=2, y=0.7, label="P = 0.023", size=5) +
   geom_boxplot(width = 0.2, position = position_dodge(0.9))
 ETS_plot <- ggplot(ETS, aes(x=Comparison, y=dxy, fill = Type)) +
-  ylim(0,0.75) + labs(title="Electron Transport System", x ="Species", y="Dxy") + 
+  ylim(0,0.75) + labs(title="ETS (N = 57)", x ="Species", y="Dxy") + 
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   scale_fill_manual(values=c("#af8dc3","#7fbf7b")) +
-  theme(text = element_text(size=10)) + geom_text(x=1.6, y=0.76, 
-  label="N = 57, Sin P = 0.039, Fas P = 0.668", size=2.5) +
+  theme(text = element_text(size=10)) + 
+  geom_text(x=1, y=0.76, label="P = 0.668", size=2.5) + 
+  geom_text(x=2, y=0.76, label="P = 0.039", size=2.5) + 
   geom_boxplot(width = 0.2, position = position_dodge(0.9))
 MRP_plot <- ggplot(MRP, aes(x=Comparison, y=dxy, fill = Type)) + ylim(0,0.65) +
-  labs(title="Mito Ribosomal Protein", x ="Species", y="Dxy") + 
+  labs(title="MRP (N = 30)", x ="Species", y="Dxy") + 
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   scale_fill_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) +
-  theme(text = element_text(size=10)) + geom_text(x=1.6, y=0.66, 
-  label="N = 30, Sin P = 0.087, Fas P = 0.813", size=2.5) +
+  theme(text = element_text(size=10)) + 
+  geom_text(x=1, y=0.66, label="P = 0.813", size=2.5) + 
+  geom_text(x=2, y=0.66, label="P = 0.087", size=2.5) + 
   geom_boxplot(width = 0.15, position = position_dodge(0.9))
 MTS_plot <- ggplot(MTS, aes(x=Comparison, y=dxy, fill = Type)) +
-  labs(title="Mito tRNA-synthetase", x ="Species", y="Dxy") + ylim(0,0.45) +
+  labs(title="MTS (N = 15)", x ="Species", y="Dxy") + ylim(0,0.45) +
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   scale_fill_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) +
-  theme(text = element_text(size=10)) + geom_text(x=1.6, y=0.46, 
-  label="N = 15, Sin P = 0.717, Fas P = 0.386", size=2.5) +
+  theme(text = element_text(size=10)) +
+  geom_text(x=1, y=0.46, label="P = 0.386", size=2.5) +
+  geom_text(x=2, y=0.46, label="P = 0.717", size=2.5) +
   geom_boxplot(width = 0.1, position = position_dodge(0.9))
 MISC_plot <- ggplot(MISC, aes(x=Comparison, y=dxy, fill = Type)) + ylim(0,0.5) +
-  labs(title="Transcription/translation", x ="Species", y="Dxy") + 
+  labs(title="MISC (N = 14)", x ="Species", y="Dxy") + 
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   scale_fill_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) +
-  theme(text = element_text(size=10)) + geom_text(x=1.6, y=0.51, 
-  label="N = 14, Sin P = 0.1325, Fas P = 0.35", size=2.5) +
+  theme(text = element_text(size=10)) +
+  geom_text(x=1, y=0.51, label="P = 0.35", size=2.5) +
+  geom_text(x=2, y=0.51, label="P = 0.133", size=2.5) +
   geom_boxplot(width = 0.2, position = position_dodge(0.9))
 
 # Create legend using info from ALL_plot above
@@ -173,36 +178,36 @@ mod_MISC.fdm <- ddply(Fdm_MISC, "Paired_Gene_Data.Type", summarise, grp.mean=mea
 # and coloring lines (N-mt and nuclear) in density plots
 
 ALL_fdm_plot <- ggplot(Fdm, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
-  geom_text(x=-0.55, y=2.5, label="N = 99, P = 0.35", size=5, show.legend = FALSE, colour="black") +
-  geom_density() + labs(title="All Functional Categories", x="fdM", y = "Density") + theme(legend.position = "none") +
+  geom_text(x=-0.55, y=2.5, label="P = 0.35", size=5, show.legend = FALSE, colour="black") +
+  geom_density() + labs(title="All Functional Categories (N = 99)", x="fdM", y = "Density") + theme(legend.position = "none") +
   theme(legend.title=element_text(size=25)) + theme(legend.text=element_text(size=23)) +
   ylim(0,2.5) + scale_color_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_ALL.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") + 
   theme(text = element_text(size=15))
 ETS_fdm_plot <- ggplot(Fdm_ETS, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
-  geom_density() + labs(title="Electron Transport System", x="fdM", y = "Density") + theme(legend.position = "none") +
+  geom_density() + labs(title="ETS (N = 48)", x="fdM", y = "Density") + theme(legend.position = "none") +
   ylim(0,2.5) + scale_color_manual(values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_ETS.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") +
   theme(text = element_text(size=10)) + 
-  geom_text(x=-0.5, y=2.5, label="N = 48, P = 0.382", size=2.5, colour="black")
+  geom_text(x=-0.5, y=2.5, label="P = 0.382", size=2.5, colour="black")
 MRP_fdm_plot <- ggplot(Fdm_MRP, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
-  geom_density() + labs(title="Mito Ribosomal Protein", x="fdM", y = "Density") + theme(legend.position = "none") +
+  geom_density() + labs(title="MRP (N = 28)", x="fdM", y = "Density") + theme(legend.position = "none") +
   ylim(0,2.5) + scale_color_manual(values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_MRP.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") +
   theme(text = element_text(size=10)) +
-  geom_text(x=-0.53, y=2.5, label="N = 28, P = 0.354", size=2.5, colour="black")
+  geom_text(x=-0.53, y=2.5, label="P = 0.354", size=2.5, colour="black")
 MTS_fdm_plot <- ggplot(Fdm_MTS, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
-  geom_density() + labs(title="Mito tRNA-synthetase", x="fdM", y = "Density") + theme(legend.position = "none") +
+  geom_density() + labs(title="MTS (N = 10)", x="fdM", y = "Density") + theme(legend.position = "none") +
   ylim(0,3.5) + scale_color_manual(values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_MTS.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") + 
   theme(text = element_text(size=10)) +
-  geom_text(x=-0.3, y=3.5, label="N = 10, P = 0.685", size=2.5, colour="black")
+  geom_text(x=-0.3, y=3.5, label="P = 0.685", size=2.5, colour="black")
 MISC_fdm_plot <- ggplot(Fdm_MISC, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
-  geom_density() + labs(title="Transcription/translation", x="fdM", y = "Density") + theme(legend.position = "none") +
+  geom_density() + labs(title="MISC (N = 13)", x="fdM", y = "Density") + theme(legend.position = "none") +
   ylim(0,3) + scale_color_manual(values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_MISC.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") + 
   theme(text = element_text(size=10)) +
-  geom_text(x=-0.5, y=3, label="N = 13, P = 0.35", size=2.5, colour="black")
+  geom_text(x=-0.5, y=3, label="P = 0.35", size=2.5, colour="black")
 
 # Create legend using info from ALL_fdm_plot above
 ALL_fdm_legend <- get_legend(ALL_fdm_plot, position = "bottom")
@@ -300,6 +305,7 @@ Fas_Branches=Fas_Branches_three[which(Fas_Branches_three[,1]>864),]
 # branch extension. Then make this table look clean and print out as png
 Branches=rbind(Sin_Branches, Fas_Branches)
 Branches_table=table(Branches$Comparison, Branches$Extension)
+
 png("Figures/Branch_Table.png",res=300,height = 3.5,width = 4.5,units="in",pointsize = 10)
 grid.table(Branches_table)
 dev.off()
@@ -309,6 +315,21 @@ dev.off()
 sink("Stats/Branch_Exact_results.txt")
 fisher.test(Branches_table, alternative = "greater")
 sink()
+
+Sin_MTS_one=data.frame(Gene_Data$Arc.Sin,Gene_Data$Extension,Gene_Data$Type,
+                            Gene_Data$FuncCategory,Gene_Data$Gene,"Sinica")
+names(Sin_MTS_one)<-c("Topo","Extension","Type","Category","Gene","Comparison")
+Sin_MTS_two <- Sin_MTS_one[complete.cases(Sin_MTS_one), ]
+Sin_MTS_three=Sin_MTS_two[Sin_MTS_two$Type == "N-mt", ]
+Sin_MTS_four=Sin_MTS_three[which(Sin_MTS_three[,1]>864), ]
+Sin_MTS=data.frame(Sin_MTS_four[Sin_MTS_four$Category == "MTS", ], "MTS")
+Sin_Other=data.frame(Sin_MTS_four[Sin_MTS_four$Category != "MTS", ], "Other")
+names(Sin_MTS)<-c("Topo","Extension","Type","Category","Gene","Comparison","MTS")
+names(Sin_Other)<-c("Topo","Extension","Type","Category","Gene","Comparison","MTS")
+MTS_branches=rbind(Sin_MTS,Sin_Other)
+MTS_branches_table=table(MTS_branches$MTS, MTS_branches$Extension)
+grid.table(MTS_branches_table)
+fisher.test(MTS_branches_table, alternative = "less")
 
 # Recombination -----------------------------------------------------------
 
