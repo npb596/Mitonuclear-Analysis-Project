@@ -1,5 +1,5 @@
 # Mitonuclear Analysis Project
-This repository contains data files and scripts to reproduce the analysis for the manuscript currently titled: **"Mitonuclear Conflict in a Macaque Species Exhibiting Phylogenetic Discordance"**
+This repository contains data files and scripts to reproduce the analysis for the manuscript currently titled: **"Mitonuclear conflict in a macaque species exhibiting phylogenomic discordance"**
 
 # Abstract 
 
