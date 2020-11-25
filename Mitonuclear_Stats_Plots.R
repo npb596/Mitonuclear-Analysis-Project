@@ -24,7 +24,7 @@ library(gridExtra)
 # Set working directory according to location of data file if using through RStudio
 # Working directory should be set to directory containing the Git Repo
 # As of now it assumes the home directory contains the git repo
-setwd("~/Mitonuclear-Analysis-Project")
+#setwd("~/Mitonuclear-Analysis-Project")
 
 # Read in complete data file for this study
 # Also read in a data file containing only paired N-mt and nuclear genes
@@ -37,7 +37,7 @@ Paired_Gene_Data <- subset(Gene_Data, (!is.na(Gene_Data[,19])))
 # Then assign names to columns to allow for consistency with Arc-Fas statistics
 # Then exclude genes with no Dxy value and genes paired to these
 Sin_Dxy_one <- data.frame(Paired_Gene_Data$Sin.Dxy,Paired_Gene_Data$Type,
-                      Paired_Gene_Data$FuncCategory,
+                      Paired_Gene_Data$Function,
                       Paired_Gene_Data$Pairing,Paired_Gene_Data$Gene,"Sinica")
 names(Sin_Dxy_one)<-c("dxy","Type","Category","Pairing","Gene","Comparison")
 Sin_Dxy_two <- Sin_Dxy_one[complete.cases(Sin_Dxy_one), ]
@@ -46,7 +46,7 @@ Sin_Dxy <- subset(Sin_Dxy_two,duplicated(Sin_Dxy_two$Pairing) |
 
 # Perform the steps described above but with Arctoides and Fascicularis data
 Fas_Dxy_one <- data.frame(Paired_Gene_Data$Fas.Dxy,Paired_Gene_Data$Type,
-                      Paired_Gene_Data$FuncCategory,
+                      Paired_Gene_Data$Function,
                       Paired_Gene_Data$Pairing,Paired_Gene_Data$Gene,"Fascicularis")
 names(Fas_Dxy_one)<-c("dxy","Type","Category","Pairing","Gene","Comparison")
 Fas_Dxy_two <- Fas_Dxy_one[complete.cases(Fas_Dxy_one), ]
@@ -76,40 +76,40 @@ ALL_plot <- ggplot(Dxy, aes(x=Comparison, y=dxy, fill = Type)) + ylim(0,0.69) +
   theme(legend.title=element_text(size=25)) + theme(legend.text=element_text(size=23)) +
   scale_fill_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) + 
   theme(text = element_text(size=15)) + 
-  geom_text(x=1, y=0.7, label="P = 0.759", size=5) + 
-  geom_text(x=2, y=0.7, label="P = 0.023", size=5) +
+  geom_text(x=1, y=0.7, label="P = 0.751", size=5) + 
+  geom_text(x=2, y=0.7, label="P = 0.028", size=5) +
   geom_boxplot(width = 0.2, position = position_dodge(0.9))
 ETS_plot <- ggplot(ETS, aes(x=Comparison, y=dxy, fill = Type)) +
   ylim(0,0.75) + labs(title="ETS (N = 57)", x ="Species", y="Dxy") + 
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   scale_fill_manual(values=c("#af8dc3","#7fbf7b")) +
   theme(text = element_text(size=10)) + 
-  geom_text(x=1, y=0.76, label="P = 0.668", size=2.5) + 
-  geom_text(x=2, y=0.76, label="P = 0.039", size=2.5) + 
+  geom_text(x=1, y=0.76, label="P = 0.735", size=2.5) + 
+  geom_text(x=2, y=0.76, label="P = 0.075", size=2.5) + 
   geom_boxplot(width = 0.2, position = position_dodge(0.9))
 MRP_plot <- ggplot(MRP, aes(x=Comparison, y=dxy, fill = Type)) + ylim(0,0.65) +
   labs(title="MRP (N = 30)", x ="Species", y="Dxy") + 
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   scale_fill_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) +
   theme(text = element_text(size=10)) + 
-  geom_text(x=1, y=0.66, label="P = 0.813", size=2.5) + 
-  geom_text(x=2, y=0.66, label="P = 0.087", size=2.5) + 
+  geom_text(x=1, y=0.66, label="P = 0.774", size=2.5) + 
+  geom_text(x=2, y=0.66, label="P = 0.127", size=2.5) + 
   geom_boxplot(width = 0.15, position = position_dodge(0.9))
 MTS_plot <- ggplot(MTS, aes(x=Comparison, y=dxy, fill = Type)) +
   labs(title="MTS (N = 15)", x ="Species", y="Dxy") + ylim(0,0.45) +
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   scale_fill_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) +
   theme(text = element_text(size=10)) +
-  geom_text(x=1, y=0.46, label="P = 0.386", size=2.5) +
-  geom_text(x=2, y=0.46, label="P = 0.717", size=2.5) +
+  geom_text(x=1, y=0.46, label="P = 0.681", size=2.5) +
+  geom_text(x=2, y=0.46, label="P = 0.7", size=2.5) +
   geom_boxplot(width = 0.1, position = position_dodge(0.9))
 MISC_plot <- ggplot(MISC, aes(x=Comparison, y=dxy, fill = Type)) + ylim(0,0.5) +
   labs(title="MISC (N = 14)", x ="Species", y="Dxy") + 
   geom_violin(trim=FALSE) + theme(legend.position = "none") +
   scale_fill_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) +
   theme(text = element_text(size=10)) +
-  geom_text(x=1, y=0.51, label="P = 0.35", size=2.5) +
-  geom_text(x=2, y=0.51, label="P = 0.133", size=2.5) +
+  geom_text(x=1, y=0.51, label="P = 0.357", size=2.5) +
+  geom_text(x=2, y=0.51, label="P = 0.086", size=2.5) +
   geom_boxplot(width = 0.2, position = position_dodge(0.9))
 
 # Create legend using info from ALL_plot above
@@ -124,31 +124,33 @@ ggarrange(ALL_plot,
           legend.grob = ALL_legend)
 dev.off()
 
+
+
 # Conduct Wilcoxon Rank-Sum tests on all genes as well as category subsets
 # and print these out as a single text file
 # Expectation for Sinica Dxy is N-mt greater than nuclear
 # Expectation for Fascicularis Dxy is the opposite
 sink("Stats/Dxy_Wilcoxon_results.txt")
 print("Dxy between Sinica and Arctoides for all paired genes")
-wilcox.test(dxy ~ Type, data=Sin_Dxy, alternative="greater")
+wilcox.test(dxy ~ Type, data=Sin_Dxy, alternative="greater", paired=TRUE)
 print("Dxy between Sinica and Arctoides for paired ETS genes")
-wilcox.test(dxy ~ Type, data=Sin_ETS, alternative="greater")
+wilcox.test(dxy ~ Type, data=Sin_ETS, alternative="greater", paired=TRUE)
 print("Dxy between Sinica and Arctoides for paired MRP genes")
-wilcox.test(dxy ~ Type, data=Sin_MRP, alternative="greater")
+wilcox.test(dxy ~ Type, data=Sin_MRP, alternative="greater", paired=TRUE)
 print("Dxy between Sinica and Arctoides for paired MTS genes")
-wilcox.test(dxy ~ Type, data=Sin_MTS, alternative="greater")
+wilcox.test(dxy ~ Type, data=Sin_MTS, alternative="greater", paired=TRUE)
 print("Dxy between Sinica and Arctoides for paired MISC genes")
-wilcox.test(dxy ~ Type, data=Sin_MISC, alternative="greater")
+wilcox.test(dxy ~ Type, data=Sin_MISC, alternative="greater", paired=TRUE)
 print("Dxy between Fascicularis and Arctoides for all paired genes")
-wilcox.test(dxy ~ Type, data=Fas_Dxy, alternative="less")
+wilcox.test(dxy ~ Type, data=Fas_Dxy, alternative="less", paired=TRUE)
 print("Dxy between Fascicularis and Arctoides for paired ETS genes")
-wilcox.test(dxy ~ Type, data=Fas_ETS, alternative="less")
+wilcox.test(dxy ~ Type, data=Fas_ETS, alternative="less", paired=TRUE)
 print("Dxy between Fascicularis and Arctoides for paired MRP genes")
-wilcox.test(dxy ~ Type, data=Fas_MRP, alternative="less")
+wilcox.test(dxy ~ Type, data=Fas_MRP, alternative="less", paired=TRUE)
 print("Dxy between Fascicularis and Arctoides for paired MTS genes")
-wilcox.test(dxy ~ Type, data=Fas_MTS, alternative="less")
+wilcox.test(dxy ~ Type, data=Fas_MTS, alternative="less", paired=TRUE)
 print("Dxy between Fascicularis and Arctoides for paired MISC genes")
-wilcox.test(dxy ~ Type, data=Fas_MISC, alternative="less")
+wilcox.test(dxy ~ Type, data=Fas_MISC, alternative="less", paired=TRUE)
 sink()
 
 # Introgression -----------------------------------------------------------
@@ -156,17 +158,17 @@ sink()
 # Define a data frame with fdM statistics from paired data
 # Then exclude genes with no fdM value and genes paired to these
 Fdm_one <- data.frame(Paired_Gene_Data$fdM,Paired_Gene_Data$Type,
-                          Paired_Gene_Data$FuncCategory,
+                          Paired_Gene_Data$Function,
                           Paired_Gene_Data$Pairing,Paired_Gene_Data$Gene)
 Fdm_two <- Fdm_one[complete.cases(Fdm_one), ]
 Fdm <- subset(Fdm_two,duplicated(Fdm_two$Paired_Gene_Data.Pairing) | 
                     duplicated(Fdm_two$Paired_Gene_Data.Pairing, fromLast=TRUE))
 
 # Subset all functional categories and obtain means for N-mt and nuclear genes
-Fdm_ETS=Fdm[Fdm$Paired_Gene_Data.FuncCategory == "ETS", ]
-Fdm_MRP=Fdm[Fdm$Paired_Gene_Data.FuncCategory == "MRP", ]
-Fdm_MTS=Fdm[Fdm$Paired_Gene_Data.FuncCategory == "MTS", ]
-Fdm_MISC=Fdm[Fdm$Paired_Gene_Data.FuncCategory == "MISC", ]
+Fdm_ETS=Fdm[Fdm$Paired_Gene_Data.Function == "ETS", ]
+Fdm_MRP=Fdm[Fdm$Paired_Gene_Data.Function == "MRP", ]
+Fdm_MTS=Fdm[Fdm$Paired_Gene_Data.Function == "MTS", ]
+Fdm_MISC=Fdm[Fdm$Paired_Gene_Data.Function == "MISC", ]
 
 mod_ALL.fdm <- ddply(Fdm, "Paired_Gene_Data.Type", summarise, grp.mean=mean(Paired_Gene_Data.fdM))
 mod_ETS.fdm <- ddply(Fdm_ETS, "Paired_Gene_Data.Type", summarise, grp.mean=mean(Paired_Gene_Data.fdM))
@@ -178,7 +180,7 @@ mod_MISC.fdm <- ddply(Fdm_MISC, "Paired_Gene_Data.Type", summarise, grp.mean=mea
 # and coloring lines (N-mt and nuclear) in density plots
 
 ALL_fdm_plot <- ggplot(Fdm, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
-  geom_text(x=-0.55, y=2.5, label="P = 0.35", size=5, show.legend = FALSE, colour="black") +
+  geom_text(x=-0.55, y=2.5, label="P = 0.332", size=5, show.legend = FALSE, colour="black") +
   geom_density() + labs(title="All Functional Categories (N = 99)", x="fdM", y = "Density") + theme(legend.position = "none") +
   theme(legend.title=element_text(size=25)) + theme(legend.text=element_text(size=23)) +
   ylim(0,2.5) + scale_color_manual(name = "Gene Type", values=c("#af8dc3","#7fbf7b")) + 
@@ -189,25 +191,25 @@ ETS_fdm_plot <- ggplot(Fdm_ETS, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Da
   ylim(0,2.5) + scale_color_manual(values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_ETS.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") +
   theme(text = element_text(size=10)) + 
-  geom_text(x=-0.5, y=2.5, label="P = 0.382", size=2.5, colour="black")
+  geom_text(x=-0.5, y=2.5, label="P = 0.486", size=2.5, colour="black")
 MRP_fdm_plot <- ggplot(Fdm_MRP, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
   geom_density() + labs(title="MRP (N = 28)", x="fdM", y = "Density") + theme(legend.position = "none") +
   ylim(0,2.5) + scale_color_manual(values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_MRP.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") +
   theme(text = element_text(size=10)) +
-  geom_text(x=-0.53, y=2.5, label="P = 0.354", size=2.5, colour="black")
+  geom_text(x=-0.53, y=2.5, label="P = 0.233", size=2.5, colour="black")
 MTS_fdm_plot <- ggplot(Fdm_MTS, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
   geom_density() + labs(title="MTS (N = 10)", x="fdM", y = "Density") + theme(legend.position = "none") +
   ylim(0,3.5) + scale_color_manual(values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_MTS.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") + 
   theme(text = element_text(size=10)) +
-  geom_text(x=-0.3, y=3.5, label="P = 0.685", size=2.5, colour="black")
+  geom_text(x=-0.3, y=3.5, label="P = 0.813", size=2.5, colour="black")
 MISC_fdm_plot <- ggplot(Fdm_MISC, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_Data.Type)) +
   geom_density() + labs(title="MISC (N = 13)", x="fdM", y = "Density") + theme(legend.position = "none") +
   ylim(0,3) + scale_color_manual(values=c("#af8dc3","#7fbf7b")) + 
   geom_vline(data=mod_MISC.fdm, aes(xintercept=grp.mean, color=Paired_Gene_Data.Type), linetype="dashed") + 
   theme(text = element_text(size=10)) +
-  geom_text(x=-0.5, y=3, label="P = 0.35", size=2.5, colour="black")
+  geom_text(x=-0.5, y=3, label="P = 0.422", size=2.5, colour="black")
 
 # Create legend using info from ALL_fdm_plot above
 ALL_fdm_legend <- get_legend(ALL_fdm_plot, position = "bottom")
@@ -226,15 +228,15 @@ dev.off()
 # Print out results with titles
 sink("Stats/fdM_Wilcoxon_results.txt")
 print("fdM for all paired genes")
-wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm, alternative="greater")
+wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm, alternative="greater", paired=TRUE)
 print("fdM for ETS paired genes")
-wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm_ETS, alternative="greater")
+wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm_ETS, alternative="greater", paired=TRUE)
 print("fdM for MRP paired genes")
-wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm_MRP, alternative="greater")
+wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm_MRP, alternative="greater", paired=TRUE)
 print("fdM for MTS paired genes")
-wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm_MTS, alternative="greater")
+wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm_MTS, alternative="greater", paired=TRUE)
 print("fdM for MISC paired genes")
-wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm_MISC, alternative="greater")
+wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm_MISC, alternative="greater", paired=TRUE)
 sink()
 
 # Selection ---------------------------------------------------------------
@@ -243,21 +245,21 @@ sink()
 # Then assign names to columns to allow for consistency with other dNdS statistics
 # Then exclude genes with no fdM value and nuclear genes
 Arc_dNdS_one <- data.frame(Gene_Data$Arc.dN.dS,Gene_Data$Type,
-                      Gene_Data$FuncCategory,Gene_Data$Gene,"Arctoides")
+                      Gene_Data$Function,Gene_Data$Gene,"Arctoides")
 names(Arc_dNdS_one)<-c("dNdS","Type","Category","Gene","Comparison")
 Arc_dNdS_two <- Arc_dNdS_one[complete.cases(Arc_dNdS_one), ]
 Arc_dNdS=Arc_dNdS_two[Arc_dNdS_two$Type == "N-mt", ]
 
 # Perform the steps described above but with Sinica and Silenus data
 Sin_dNdS_one <- data.frame(Gene_Data$Sin.dN.dS,Gene_Data$Type,
-                       Gene_Data$FuncCategory,Gene_Data$Gene,"Sinica")
+                       Gene_Data$Function,Gene_Data$Gene,"Sinica")
 names(Sin_dNdS_one)<-c("dNdS","Type","Category","Gene","Comparison")
 Sin_dNdS_two <- Sin_dNdS_one[complete.cases(Sin_dNdS_one), ]
 Sin_dNdS=Sin_dNdS_two[Sin_dNdS_two$Type == "N-mt", ]
 
 # Perform the steps described above but with Fascicularis and Silenus data
 Fas_dNdS_one <- data.frame(Gene_Data$Fas.dN.dS,Gene_Data$Type,
-                       Gene_Data$FuncCategory,Gene_Data$Gene,"Fascicularis")
+                       Gene_Data$Function,Gene_Data$Gene,"Fascicularis")
 names(Fas_dNdS_one)<-c("dNdS","Type","Category","Gene","Comparison")
 Fas_dNdS_two <- Fas_dNdS_one[complete.cases(Fas_dNdS_one), ]
 Fas_dNdS=Fas_dNdS_two[Fas_dNdS_two$Type == "N-mt", ]
@@ -286,17 +288,17 @@ sink()
 # Then assign names to columns to allow for consistency with other branch extension data
 # Then exclude genes with no branch extension data and nuclear genes
 # Then include only genes with a majority Arc-Sin topology
-Sin_Branches_one=data.frame(Gene_Data$Arc.Sin,Gene_Data$Extension,Gene_Data$Type,
-                        Gene_Data$FuncCategory,Gene_Data$Gene,"Sinica")
-names(Sin_Branches_one)<-c("Topo","Extension","Type","Category","Gene","Comparison")
+Sin_Branches_one=data.frame(Gene_Data$Arc.Sin,Gene_Data$ChiSquare,Gene_Data$Type,
+                        Gene_Data$Function,Gene_Data$Gene,"Sinica")
+names(Sin_Branches_one)<-c("Topo","ChiSquare","Type","Category","Gene","Comparison")
 Sin_Branches_two <- Sin_Branches_one[complete.cases(Sin_Branches_one), ]
 Sin_Branches_three=Sin_Branches_two[Sin_Branches_two$Type == "N-mt", ]
 Sin_Branches=Sin_Branches_three[which(Sin_Branches_three[,1]>864),]
 
 # Perform the steps described above but with Arc-Fas topology
-Fas_Branches_one=data.frame(Gene_Data$Arc.Fas,Gene_Data$Extension,Gene_Data$Type,
-                            Gene_Data$FuncCategory,Gene_Data$Gene,"Fascicularis")
-names(Fas_Branches_one)<-c("Topo","Extension","Type","Category","Gene","Comparison")
+Fas_Branches_one=data.frame(Gene_Data$Arc.Fas,Gene_Data$ChiSquare,Gene_Data$Type,
+                            Gene_Data$Function,Gene_Data$Gene,"Fascicularis")
+names(Fas_Branches_one)<-c("Topo","ChiSquare","Type","Category","Gene","Comparison")
 Fas_Branches_two <- Fas_Branches_one[complete.cases(Fas_Branches_one), ]
 Fas_Branches_three=Fas_Branches_two[Fas_Branches_two$Type == "N-mt", ]
 Fas_Branches=Fas_Branches_three[which(Fas_Branches_three[,1]>864),]
@@ -305,6 +307,8 @@ Fas_Branches=Fas_Branches_three[which(Fas_Branches_three[,1]>864),]
 # branch extension. Then make this table look clean and print out as png
 Branches=rbind(Sin_Branches, Fas_Branches)
 Branches_table=table(Branches$Comparison, Branches$Extension)
+
+wilcox.test(ChiSquare ~ Comparison, data=Branches, alternative="greater", paired=FALSE)
 
 png("Figures/Branch_Table.png",res=300,height = 3.5,width = 4.5,units="in",pointsize = 10)
 grid.table(Branches_table)
@@ -316,21 +320,6 @@ sink("Stats/Branch_Exact_results.txt")
 fisher.test(Branches_table, alternative = "greater")
 sink()
 
-Sin_MTS_one=data.frame(Gene_Data$Arc.Sin,Gene_Data$Extension,Gene_Data$Type,
-                            Gene_Data$FuncCategory,Gene_Data$Gene,"Sinica")
-names(Sin_MTS_one)<-c("Topo","Extension","Type","Category","Gene","Comparison")
-Sin_MTS_two <- Sin_MTS_one[complete.cases(Sin_MTS_one), ]
-Sin_MTS_three=Sin_MTS_two[Sin_MTS_two$Type == "N-mt", ]
-Sin_MTS_four=Sin_MTS_three[which(Sin_MTS_three[,1]>864), ]
-Sin_MTS=data.frame(Sin_MTS_four[Sin_MTS_four$Category == "MTS", ], "MTS")
-Sin_Other=data.frame(Sin_MTS_four[Sin_MTS_four$Category != "MTS", ], "Other")
-names(Sin_MTS)<-c("Topo","Extension","Type","Category","Gene","Comparison","MTS")
-names(Sin_Other)<-c("Topo","Extension","Type","Category","Gene","Comparison","MTS")
-MTS_branches=rbind(Sin_MTS,Sin_Other)
-MTS_branches_table=table(MTS_branches$MTS, MTS_branches$Extension)
-grid.table(MTS_branches_table)
-fisher.test(MTS_branches_table, alternative = "less")
-
 # Recombination -----------------------------------------------------------
 
 # Define a data frame with recombination and fdM statistics
@@ -338,7 +327,7 @@ fisher.test(MTS_branches_table, alternative = "less")
 # Then exclude genes with no fdM or recombination values
 # Then only include genes with majority Arc-Sin topology
 Sin_Recom_one=data.frame(Gene_Data$Arc.Sin,Gene_Data$RecomRate,Gene_Data$fdM,
-                         Gene_Data$Type,Gene_Data$FuncCategory,Gene_Data$Gene,"Sinica")
+                         Gene_Data$Type,Gene_Data$Function,Gene_Data$Gene,"Sinica")
 names(Sin_Recom_one)<-c("Topo","Recombination","fdM","Type","Category","Gene","Comparison")
 Sin_Recom_two <- Sin_Recom_one[complete.cases(Sin_Recom_one), ]
 Sin_Recom_three=Sin_Recom_two[Sin_Recom_two$Type == "N-mt", ]
@@ -350,7 +339,7 @@ SinMod <- lm(formula = Sin_Recom$Recombination ~ Sin_Recom$fdM)
 
 # Perform the steps described above but with Arc-Fas topology genes
 Fas_Recom_one=data.frame(Gene_Data$Arc.Fas,Gene_Data$RecomRate,Gene_Data$fdM,
-                         Gene_Data$Type,Gene_Data$FuncCategory,Gene_Data$Gene,"Fascicularis")
+                         Gene_Data$Type,Gene_Data$Function,Gene_Data$Gene,"Fascicularis")
 names(Fas_Recom_one)<-c("Topo","Recombination","fdM","Type","Category","Gene","Comparison")
 Fas_Recom_two <- Fas_Recom_one[complete.cases(Fas_Recom_one), ]
 Fas_Recom_three=Fas_Recom_two[Fas_Recom_two$Type == "N-mt", ]
