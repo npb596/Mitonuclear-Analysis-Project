@@ -1,7 +1,7 @@
 # Mitonuclear Analysis Project
 This repository contains data files and scripts to reproduce the analysis for the manuscript titled: **"Mitonuclear conflict in a macaque species exhibiting phylogenomic discordance"**
 
-This repository will continue to be updated with better-optimized scripts accomplishing the purposes of this experiment. When this is done the original scripts used for the manuscript data will be kept for posterity with special notes encouraging users to run the new and improved scripts. In particular, many of the shell scripts would be better optimized as python scripts, especially ones that depend on python scripts within a loop.
+This repository will continue to be updated with better-optimized scripts accomplishing the purposes of this experiment. In particular, many of the shell scripts may be better optimized as python scripts. The version with all scripts originally used in writing this manuscript are available as the version 1.0 release on the github page.
 
 # Abstract 
 
@@ -46,11 +46,17 @@ chromosome	start	end	gene	recom_rate	GC_content	length
 chr1    15716094        15749833        SDHB    0.292168        44.257387593    33739
 ```
 
-The header is included here so you can know what the parameters are and the order they are in. gene\_matcher.sh assumes there is no header so it would be best to make the file without the header as well. Once files of this sort are made for both the query genes and a large set of potentially matching genes, one can input the names of these datasets into gene\_matcher.sh (the filenames are hard-coded). The output file name should also be specified and the match\_math python scripts should have their paths correctly referred to. The gene\_matcher.sh script uses the bash shuf command to pick a random matching gene if multiple match all the criteria of the query gene. This requires that the shuf command be present on the given computer and adds randomness to the study. Additionally, it is specified in the manuscript that recombination rate is not used to match chromosome X genes, so this script can be modified by simply commenting out the relevant portions and changing temporary file names. The script may take several minutes to run for the 143 query genes in this study.
+The header is included here so you can know what the parameters are and the order they are in. gene\_matcher.py assumes there is no header so it would be best to make the file without the header as well. Once files of this sort are made for both the query genes (N-mt genes in our case) and a large set of potentially matching genes (subject or other nuclear genes in our case) then one can use the query file as first argument, subject file as second argument, and desired final output as third argument.
+
+```
+python3 gene_matcher.py Query.bed Subject.bed Output.bed
+```
+
+The gene\_matcher.py script uses the python random module to pick a random matching gene if multiple match all the criteria of the query gene. This necessarily adds randomness to the study. Additionally, it is specified in the manuscript that recombination rate is not used to match chromosome X genes, so this script can be modified by simply commenting out the relevant portions.
 
 ## Converting Ensembl exon coordinates to bed coordinates
 
-The script exon\_converter.sh is provided to take exon coordinates in Ensembl format and convert them to a bed file. For example, given a transcript with four exons where the exon positions are 100-150, 200-250, 300-350, and 400-450, Ensembl will give the following two tab-separated columns:
+The script exon\_converter.py is provided to take exon coordinates in Ensembl format and convert them to a bed file. For example, given a transcript with four exons where the exon positions are 100-150, 200-250, 300-350, and 400-450, Ensembl will give the following two tab-separated columns:
 
 ```
 100,200,300,400,	150,250,350,450,
@@ -66,9 +72,22 @@ We want this to be represented in bed format such as:
 Therefore, we can convert the Ensembl data to bed data with a command like the following:
 
 ```
-./exon_converter.sh ensembl_exons.txt exons.bed
+./exon_converter.py ensGene.combined.txt Exons.bed
 ```
 
-This is assuming that the former file only has four columns, chromosome, exon starts, exon ends, and transcript/gene name.
+The second argument is the desired output file and the first argument is an Ensembl annotation file where HUGO gene names have been added using an awk command:
+
+```
+awk 'NR==FNR {file1[$2]=$0; next} {$1=file1[$1]; print}' ensGene.txt ensemblToGeneName.txt > ensGene.combined.txt 
+```
+
+Both the ensGene.txt and ensemblToGeneName.txt files can be found from the UCSC Genome Browser and the Ensembl site for a given reference genome (in this study rheMac8). The output of the exon\_converter.py will look something like this:
+
+```
+chr1    8230    10763   ENSMMUT00000032773.4    PGBD2
+chr1    13490   13554   ENSMMUT00000032773.4    PGBD2
+```
+
+Where the positions are exon coordinates and the fourth and fifth columns are respectively transcript and gene names.
 
 The Ensembl annotation file also provides CDS coordinates for each transcript. So for someone interested in obtaining the true protein-coding positions of a gene, these must be intersected with the given exon coordinates, either before or after the above conversion process. 
