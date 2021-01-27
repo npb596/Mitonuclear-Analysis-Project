@@ -28,7 +28,7 @@ Chromosome information is given in the Ensembl annotation. Gene start and end po
 awk '{diff=$3-$2 ; print diff}' filename.bed
 ```
 
-The scripts GC\_loop.sh and GC\_script.py have been written to obtain GC content per geen for this study and bed\_recombination_finder.sh has been written to obtain recombination data per gene for this study. gene\_matcher.sh and the match\_math python scripts have been written to use all this information to match nuclear genes to N-mt genes.
+The scripts GC\_loop.sh and GC\_script.py have been written to obtain GC content per geen for this study.
 
 GC\_loop.sh requires a bed file as an argument and will then use the script GC\_script.py in a loop to find the GC content of those genes in a reference fasta file. The path to GC\_script.py and the reference fasta must be correctly defined within GC\_loop.sh
 
