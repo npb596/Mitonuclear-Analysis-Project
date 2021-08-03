@@ -24,12 +24,12 @@ library(gridExtra)
 # Set working directory according to location of data file if using through RStudio
 # Working directory should be set to directory containing the Git Repo
 # As of now it assumes the home directory contains the git repo
-setwd("~/Desktop/Mitonuclear_Project")
+#setwd("~/Desktop/Mitonuclear_Project/Mitonuclear-Analysis-Project")
 
 # Read in complete data file for this study
 # Also read in a data file containing only paired N-mt and nuclear genes
 Gene_Data=read.csv("Gene_Data_ensembl.csv",header=T,stringsAsFactors = T)
-Paired_Gene_Data=subset(Gene_Data, (!is.na(Gene_Data[,10])))
+Paired_Gene_Data=subset(Gene_Data, (!is.na(Gene_Data[,18])))
 
 # Divergence ---------------------------------------------------------------
 
@@ -116,13 +116,13 @@ MISC_plot <- ggplot(MISC, aes(x=Comparison, y=dxy, fill = Type)) + ylim(0,0.37) 
 ALL_legend <- get_legend(ALL_plot, position = "bottom")
 
 # Combine all plots defined above and add labels, output plot as png
-#png("Figure2.png",res=300,height = 6,width = 10,units="in", pointsize=1)
+png("Figures/Figure2.png",res=300,height = 6,width = 10,units="in", pointsize=1)
 ggarrange(ALL_plot,
           ggarrange(ETS_plot,MRP_plot,MTS_plot,MISC_plot,
                     labels = c("B", "C", "D","E"), font.label = list(size = 14),
                     ncol = 2, nrow = 2), labels="A", font.label = list(size = 19), 
           legend.grob = ALL_legend)
-#dev.off()
+dev.off()
 
 
 
@@ -130,7 +130,7 @@ ggarrange(ALL_plot,
 # and print these out as a single text file
 # Expectation for Sinica Dxy is N-mt greater than nuclear
 # Expectation for Fascicularis Dxy is the opposite
-sink("Dxy_Wilcoxon_results.txt")
+sink("Stats/Dxy_Wilcoxon_results.txt")
 print("Dxy between Sinica and Arctoides for all paired genes")
 wilcox.test(dxy ~ Type, data=Sin_Dxy, alternative="two.sided", paired=TRUE)
 print("Dxy between Sinica and Arctoides for paired ETS genes")
@@ -215,18 +215,18 @@ MISC_fdm_plot <- ggplot(Fdm_MISC, aes(x=Paired_Gene_Data.fdM, color=Paired_Gene_
 ALL_fdm_legend <- get_legend(ALL_fdm_plot, position = "bottom")
 
 # Combine all plots defined above and add labels, print out plots as png
-#png("Figure3.png",res=300,height = 6,width = 10,units="in",pointsize = 1)
+png("Figures/Figure3.png",res=300,height = 6,width = 10,units="in",pointsize = 1)
 ggarrange(ALL_fdm_plot,
           ggarrange(ETS_fdm_plot,MRP_fdm_plot,MTS_fdm_plot,MISC_fdm_plot,
                     labels = c("B", "C", "D","E"), font.label = list(size = 14),
                     ncol = 2, nrow = 2), labels="A", font.label = list(size = 24), 
           legend.grob = ALL_fdm_legend)
-#dev.off()
+dev.off()
 
 # Conduct Wilcoxon rank-sum test on combined fdM data and all functional categories
 # Expectation is N-mt introgression is more positive than nuclear
 # Print out results with titles
-sink("fdM_Wilcoxon_results.txt")
+sink("Stats/fdM_Wilcoxon_results.txt")
 print("fdM for all paired genes")
 wilcox.test(Paired_Gene_Data.fdM ~ Paired_Gene_Data.Type, data=Fdm, alternative="two.sided", paired=TRUE)
 print("fdM for ETS paired genes")
@@ -275,7 +275,7 @@ Dnds <- rbind(Arc_dNdS_NMT,Sin_dNdS_NMT, Fas_dNdS_NMT)
 
 # Create a boxplot with three separate boxes for each species pair
 # Print out as a png
-png("Figure5.png",res=300,height = 3.5,width = 4.5,units="in",pointsize = 10)
+png("Figures/Figure5.png",res=300,height = 3.5,width = 4.5,units="in",pointsize = 10)
 boxplot(dNdS~Comparison, data=Dnds, 
         col=c("#fdae61","#d7191c","#2c7bb6"),
         ylab="dN/dS", xlab="",
@@ -286,12 +286,10 @@ text(1.3,1.7, labels = "CARS2", cex=1)
 dev.off()
 
 # Conduct ANOVA, and print out summary of results
-res.aov <- aov(dNdS ~ Comparison*Type, data = Dnds)
-#sink("Stats/dNdS_ANOVA_results.txt")
+res.aov <- aov(dNdS ~ Comparison, data = Dnds)
+sink("Stats/dNdS_ANOVA_results.txt")
 summary(res.aov)
-
-#TukeyHSD(res.aov)
-#sink()
+sink()
 
 # Define a data frame with Arctoides branch extension
 # Then assign names to columns to allow for consistency with other branch extension data
@@ -317,7 +315,9 @@ Fas_Branches=Fas_Branches_three[which(Fas_Branches_three[,1]>0.5),]
 Branches=rbind(Sin_Branches, Fas_Branches)
 #Branches_table=table(Branches$Comparison, Branches$Extension)
 
+sink("Stats/Branch_Lengths_Wilcoxon.txt")
 wilcox.test(ChiSquare ~ Comparison, data=Branches, alternative="two.sided", paired=FALSE)
+sink()
 
 #png("Figures/Branch_Table.png",res=300,height = 3.5,width = 4.5,units="in",pointsize = 10)
 #grid.table(Branches_table)
@@ -358,12 +358,12 @@ Fas_table = table(Fas_Recom$Recombination, Fas_Recom$fdM)
 FasMod <- lm(formula = Fas_Recom$Recombination ~ Fas_Recom$fdM)
 
 # Summarize linear refgression and print out results
-#sink("Stats/Recombination_fdM_Regression_results.txt")
+sink("Stats/Recombination_fdM_Regression_results.txt")
 print("Arc-Sin Topology CM/Mb-fdM Regression")
 summary(SinMod)
 print("Arc-Fas Topology CM/Mb-fdM Regression")
 summary(FasMod)
-#sink()
+sink()
 
 # Create expressions to paste over coming scatter plots
 Sin_expression <- expression(paste("N = 104, ","P = 0.321, ",R^2," = -6e-05"))
@@ -372,7 +372,7 @@ Fas_expression <- expression(paste("N = 16, ","P = 0.624, ",R^2," = -0.053"))
 # Create scatter plots with labeled x (recombination) and y (fdM) axes
 # Paste text over the scatter plots including the above expressions
 # Print out scatter plots as png
-png("Figure4.png",res=300,height = 6,width = 10,units="in",pointsize = 10)
+png("Figures/Figure4.png",res=300,height = 6,width = 10,units="in",pointsize = 10)
 par(mar = c(5.1, 5.1, 4.1, 2.1), mfrow=c(1,2))
 scatter.smooth(x=Sin_Recom$Recombination, y=Sin_Recom$fdM,
                pch = 19,
