@@ -56,3 +56,7 @@ python3 gene_matcher.py Query.bed Subject.bed Output.bed
 ```
 
 The gene_matcher.py script uses the python random module to pick a random matching gene if multiple match all the criteria of the query gene. This necessarily adds randomness to the study.
+
+# Population Genetic Analysis
+
+Then methodology used to obtained topology weights, fdM values and Dxy values are described in the following repository: https://github.com/StevisonLab/Arctoides-Hybridization and largely implements scripts found in https://github.com/simonhmartin/genomics_general and https://github.com/simonhmartin/twisst
