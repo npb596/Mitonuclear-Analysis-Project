@@ -65,7 +65,7 @@ The shell script ExtractCodingSequences.sh does most of the heavy lifting here. 
 
 Then methodology used to obtained topology weights, fdM values and Dxy values are described in the following repository: https://github.com/StevisonLab/Arctoides-Hybridization and largely implements scripts found in https://github.com/simonhmartin/genomics_general and https://github.com/simonhmartin/twisst
 
-## dN/dS Analyses
+## dN/dS analysis
 
 Scripts used to implement PAML for dN/dS analyses and to properly weight results of these analyses for a per-gene estimate are provided in ["dNdS-Analysis-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/dNdS-Analysis-Scripts).
 
