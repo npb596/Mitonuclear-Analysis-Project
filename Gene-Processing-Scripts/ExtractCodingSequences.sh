@@ -73,6 +73,9 @@ echo "${x}" >> F2P_Output.txt
 ./Fasta2Phylip.pl gene_sequences/${x}.fa gene_sequences/${x}.phy >> F2P_Output.txt
 done
 
+# Go to gene_sequences folder and reformat Phylip files generated above so they can be analyzed by PAML
+# They will thus be "reborn", which I have named as such because this portion was scripted while listening to Kids See Ghosts
+
 cd gene_sequences
 
 files=(`ls *.phy`)
