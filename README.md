@@ -12,7 +12,7 @@ Speciation and hybridization are intertwined processes in the study of evolution
 The directory ["Gene-Processing-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Gene-Processing-Scripts)
 contains scripts used to extract coding transcripts form genome sequences and to obtain "matching" data for N-mt and nuclear genes. Dependendencies and authorship of source scripts are stated within scripts.
 
-A single data file ["Gene_Data.csv"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/blob/master/Gene_Data.csv) is provided that contains all information gathered from scripts in the above directories. A single R script ["Mitonuclear\_Stats\_Plots.R"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/blob/master/Mitonuclear_Stats_Plots.R) is provided that will analyze this data file and produce Figures and text files with statistical analyses and output these respectively to ["Figures"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Figures) and ["Stats"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Stats).
+A single data file ["Gene_Data.csv"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/blob/master/Gene_Data.csv) is provided that contains all information gathered from scripts in the above directories. A single R script ["Mitonuclear\_Stats\_Plots.R"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/blob/master/Mitonuclear_Stats_Plots.R) is provided that will analyze this data file and produce Figures and text files with statistical analyses and output these respectively to ["Figures"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Figures) and ["Stats"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/Stats). When this git repo is cloned it should be possible to simply run "Rscript Mitonuclear_Stats_Plots.R" and figures and stat files should be output to their respective directories.
 
 # Usage of Gene Processing Scripts
 
@@ -57,6 +57,16 @@ python3 gene_matcher.py Query.bed Subject.bed Output.bed
 
 The gene_matcher.py script uses the python random module to pick a random matching gene if multiple match all the criteria of the query gene. This necessarily adds randomness to the study.
 
+## Extracting coding sequences for dN/dS analysis
+
+The shell script ExtractCodingSequences.sh does most of the heavy lifting here. Details are explained in comments in the script but briefly it requires a VCF file with all samples of interest and a reference FASTA genome. It also requires several third-party programs to run (module loads in shell script) and requires the ReplaceFastaNames R and Python scripts to be present in the same directory. Other than what is in the script, it is worth noting that the VCF file should contain both invariant sites and SNP's, but not indels. We used bcftools view to retain only "ref" and "snp" types (http://samtools.github.io/bcftools/bcftools.html#expressions). The invariant sites and SNP's are both needed to create an accurate variant consensus FASTA sequence. The shell script will mask missing sites but not invariant, so the former should be explicitly given in the VCF file. Indels should be removed because they will throw off alignment given by gffread in the shell script.
+
 # Population Genetic Analysis
 
 Then methodology used to obtained topology weights, fdM values and Dxy values are described in the following repository: https://github.com/StevisonLab/Arctoides-Hybridization and largely implements scripts found in https://github.com/simonhmartin/genomics_general and https://github.com/simonhmartin/twisst
+
+## dN/dS Analyses
+
+Scripts used to implement PAML for dN/dS analyses and to properly weight results of these analyses for a per-gene estimate are provided in ["dNdS-Analysis-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/dNdS-Analysis-Scripts).
+
+Usage of these scripts is largely explained in the scripts themselves. For a brief explanation, codeml.sh should be run on gene seqeunce files coming from ExtractCodingSequences.sh and dNdS_extraction.sh should be used after codeml is completed. File locations are hard-coded into the scripts so may need to be modified for future usage.
