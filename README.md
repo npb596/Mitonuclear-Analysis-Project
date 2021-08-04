@@ -70,3 +70,5 @@ Then methodology used to obtained topology weights, fdM values and Dxy values ar
 Scripts used to implement PAML for dN/dS analyses and to properly weight results of these analyses for a per-gene estimate are provided in ["dNdS-Analysis-Scripts"](https://github.com/StevisonLab/Mitonuclear-Analysis-Project/tree/master/dNdS-Analysis-Scripts).
 
 Usage of these scripts is largely explained in the scripts themselves. For a brief explanation, codeml.sh should be run on gene seqeunce files coming from ExtractCodingSequences.sh and dNdS_extraction.sh should be used after codeml is completed. File locations are hard-coded into the scripts so may need to be modified for future usage.
+
+The Macaque_Trees.nwk file is the file used for the codeml.ctl file for all transcripts. The tree includes all possible topologies of the relationship between Arc, Sin and Fas with labels for each of these groups (described in more detail in the manuscript methods section). 
