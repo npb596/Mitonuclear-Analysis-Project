@@ -1,7 +1,7 @@
 # Mitonuclear Analysis Project
 This repository contains data files and scripts to reproduce the analysis for the manuscript titled: **"Mitonuclear conflict in a macaque species exhibiting phylogenomic discordance"**
 
-This repository will continue to be updated with better-optimized scripts accomplishing the purposes of this experiment. In particular, many of the shell scripts may be better optimized as python scripts. The version with all scripts originally used in writing this manuscript are available as the version 1.0 release on the github page.
+This repository may continue to be updated with better-optimized scripts accomplishing the purposes of this experiment. The version with all scripts originally used in writing this manuscript are available as the version 2.0 release on this github page [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5160317.svg)](https://doi.org/10.5281/zenodo.5160317)
 
 # Abstract 
 
